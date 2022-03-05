@@ -1,10 +1,13 @@
+"""Analyzing the scraped information to find the best deals."""
+
+import csv
 
 import pandas as pd
-import csv
 import warnings
 warnings.filterwarnings('ignore')
 
-def process_raw_csv():
+
+def process_raw_csv() -> None:
     df = pd.read_csv("raw.csv")
     df['star_rating'] = df['star_rating'].str.replace('%', '').astype('float')
     df['ships_from'] = df['ships_from'].str.replace('Versand aus:', '').str.strip()
@@ -33,10 +36,10 @@ def process_raw_csv():
     df["deal_quotient"] = df["media_wert"] * (df["want"] / df["have"]) / df["total_price_in_euro"]
     df = df.sort_values("deal_quotient", ascending=False)
     df.to_csv("processed.csv", index=False)
-    print("New CSV-File created.")
+    
 
 
-def getTopTenDeals():
+def get_top_ten_deals() -> None:
     with open("processed.csv") as f:
         topTen = csv.reader(f, delimiter=",")
         for index, row in enumerate(topTen):
@@ -47,5 +50,3 @@ def getTopTenDeals():
             print(f"Top {index}: https://www.discogs.com{row[-5]}")
 
 
-process_raw_csv()
-getTopTenDeals()

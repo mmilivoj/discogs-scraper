@@ -4,13 +4,13 @@ import requests
 import time
 import random 
 import re
-import click
 
 import pandas as pd
 from bs4 import BeautifulSoup
 
 
-HEADERS = {
+# Specify real-world headers, as otherwise the "requests"-library uses headers that indicate a scraping machine.
+HEADERS = { 
     "accept": "*/*",
     "accept-encoding": "gzip, deflate, br",
     "accept-language": "de-de",
@@ -24,7 +24,7 @@ BASE_URL = "https://www.discogs.com"
 
 
 def wait() -> time:
-    """Wait 10-20 seconds to slow scraping down."""
+    """Wait 3-5 seconds to slow scraping down."""
     return time.sleep(random.randrange(3, 5))
 
 
@@ -44,13 +44,13 @@ def find_master(album: str, artist: str = "") -> str:
     master_releases = master_releases_tree.find_all(
         "div", attrs={"data-object-type": "master release"}
     )
-    m_id_regex = re.compile(r"\d+")
+    m_id_regex = re.compile(r"\d+")  # search schema for id of master release
     if not artist:
-        click.echo("No Artist specified")
+        # No Artist specified
         master_url = master_releases[0].find("a")["href"]
         master_id = m_id_regex.search(master_url).group(0)
     else:
-        print("Artist specified")
+        # Artist specified
         for master_release in master_releases:
             master_url = master_release.find("a")["href"]
             if (album in master_url.lower()) and (
@@ -62,8 +62,10 @@ def find_master(album: str, artist: str = "") -> str:
         marketplace_url = f"{BASE_URL}/sell/list?sort=condition%2Cdesc&limit=250&master_id={master_id}&ev=mb"
         return marketplace_url
     except UnboundLocalError:
+        # UnboundLocalError thrown, if master_id was not assigned a value.
+            # Happens when a combination of artist and album is specified, that is not available on Discogs.com
         album = album.replace("-", " ")
-        return f"{album} für {artist} konnte leider nicht gefunden werden."
+        return f"{album} by {artist} could not be identified."
 
 
 def extract(marketplace_url: str) -> None:
@@ -86,7 +88,6 @@ def extract(marketplace_url: str) -> None:
                 continue
             title = release.find("a", class_="item_description_title")
             selling_page = release.find("a", class_="item_description_title")["href"]
-            print(selling_page)
             have = release.find(class_=re.compile(r"have_indicator.*?"))
             want = release.find(class_=re.compile(r"want_indicator.*?"))
             try:
@@ -156,7 +157,7 @@ def extract(marketplace_url: str) -> None:
             ]
 
             values = []
-            # ["href"] -> Beispiel um auf beliebiges Attribut zuzugreifen. job.span.tr.a -> um tags zu traversen.
+            
             for item in raw_data:
                 if item is not None:
                     try:
@@ -179,10 +180,6 @@ def extract(marketplace_url: str) -> None:
     with open("album.jpeg", "wb") as f:
         f.write(read_url_with_headers(album_cover_src).content)
 
-# def load(df_and_cover: list) -> None:
-#     df_and_cover[0].to_csv("releases2.csv", index=False)
-#     with open(f"album_cover2.jpeg", "wb") as f:
-#         f.write(read_url_with_headers(df_and_cover[1]).content)
 
 
 if __name__ == "__main__":
