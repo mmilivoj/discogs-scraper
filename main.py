@@ -4,9 +4,16 @@ import click
 from scrape_discogs import find_master, extract
 from analysis import process_raw_csv, get_top_ten_deals
 
+
 @click.command()
-@click.option("--album", default="", help='Provide the title of the LP to be searched on "https://www.discogs.com".')
-@click.option("--artist", default="", help="Specify the artist or band of your desired LP.")
+@click.option(
+    "--album",
+    default="",
+    help='Provide the title of the LP to be searched on "https://www.discogs.com".',
+)
+@click.option(
+    "--artist", default="", help="Specify the artist or band of your desired LP."
+)
 def scrape(album: str, artist: str = "") -> None:
     """Scrape the top ten deals for a given album (and artist/band optionally)."""
     if not album:
@@ -24,5 +31,3 @@ def scrape(album: str, artist: str = "") -> None:
 
 if __name__ == "__main__":
     scrape()
-
-# TODO: Der zieht Kassetten... WTF. musss den Link anpassen
