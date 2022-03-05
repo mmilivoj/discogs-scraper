@@ -35,6 +35,7 @@ def read_url_with_headers(url: str):
 
 
 def find_master(album: str, artist: str = "") -> str:
+    print(type(artist), artist)
     """Find master release for specified album and artist [optionally]."""
     album = "-".join(album.split())
     album_master_releases_url = f"{BASE_URL}/search/?q={album}&type=master"
@@ -53,8 +54,10 @@ def find_master(album: str, artist: str = "") -> str:
         # Artist specified
         for master_release in master_releases:
             master_url = master_release.find("a")["href"]
-            if (album in master_url.lower()) and (
-                "-".join(artist.split()) in master_url.lower()
+            print(master_url.lower())
+            print(album.lower())
+            if (album.lower() in master_url.lower()) and (
+                "-".join(artist.split()).lower() in master_url.lower()
             ):
                 master_id = m_id_regex.search(master_url).group(0)
                 break

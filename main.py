@@ -25,7 +25,7 @@ def scrape(album: str, artist: str = "") -> None:
     extract(master)
     click.secho("Filtering deals.", fg="green")
     process_raw_csv()
-    click.secho("Top Ten Deals:", fg="green")
+    click.secho("\t\tTop Ten Deals", fg="green")
     get_top_ten_deals()
 
 

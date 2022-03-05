@@ -1,5 +1,5 @@
 # Discogs Scraper
-Find the best deal for a specific vinyl (long-playing record) on Discogs.
+Find the cheapest valuable deal for a specific vinyl (long-playing record) on Discogs.
 
 ## Installation
 - 
@@ -8,3 +8,4 @@ Find the best deal for a specific vinyl (long-playing record) on Discogs.
   * ...
 * Searching with a specified artist or band 
   * ...
+* 

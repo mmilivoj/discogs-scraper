@@ -21,7 +21,7 @@ def process_raw_csv() -> None:
     df = df[df["have"].notna() | df["want"].notna()]
     df["number_of_ratings"] = df.number_of_ratings.astype(int)
     df = df[
-        (df.star_rating > 98.0) & (df.number_of_ratings >= 10)
+        (df.star_rating >= 97.8) & (df.number_of_ratings >= 10)
     ]  # Delete all rows where Star Rating is beneath 98 or number of ratings is under 10
     df["release"] = df.release_page.str.extract(
         r"(\d+)"
