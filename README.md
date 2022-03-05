@@ -3,7 +3,7 @@ Find best deal for a specific vinyl (long-playing record) on Discogs.
 
 ### What does <ins>best</ins> mean?
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;Best Deal=\frac{Media Condition\times(\frac{Want}{Have})}{Total Price}" title="\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;BestDeal=\frac{MediaCondition\times(\frac{Want}{Have})}{TotalPrice}"></img>
 
 The higher the BestDeal-quotient, the more valuable the deal.
 
