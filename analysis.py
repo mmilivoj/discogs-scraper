@@ -15,7 +15,7 @@ def process_raw_csv() -> None:
     df['number_of_ratings'] = df['number_of_ratings'].str.replace(r'Bewertung(en)?', '', regex=True).str.replace(".", "")
     df = df[df["have"].notna() | df["want"].notna()]
     df["number_of_ratings"] = df.number_of_ratings.astype(int)
-    df = df[(df.star_rating > 98.0) & (df.number_of_ratings >= 10)]  # Delete all rows where Star Rating is beneath 98 or number of ratings is under 50
+    df = df[(df.star_rating > 98.0) & (df.number_of_ratings >= 10)]  # Delete all rows where Star Rating is beneath 98 or number of ratings is under 10
     df["release"] = df.release_page.str.extract(r"(\d+)")  # Extract functions requires value in enclosed brackets => Wrong: r"\d+"; Right: r"(\d+)"
     df = df[~df["title"].str.lower().str.contains(r"unofficial")]  # Drop unofficial releases.
     df["wanted_ratio"] = df["want"] / df["have"]

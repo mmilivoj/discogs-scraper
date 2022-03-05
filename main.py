@@ -12,6 +12,7 @@ def scrape(album: str, artist: str = "") -> None:
     if not album:
         click.secho("Please specify an album title.", fg="yellow")
         return
+    click.secho("Connecting to Discogs...", fg="green")
     master = find_master(album, artist)
     click.secho("Scraping information from Discogs...", fg="green")
     extract(master)
@@ -23,3 +24,5 @@ def scrape(album: str, artist: str = "") -> None:
 
 if __name__ == "__main__":
     scrape()
+
+# TODO: Der zieht Kassetten... WTF. musss den Link anpassen

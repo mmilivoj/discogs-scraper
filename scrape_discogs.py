@@ -59,7 +59,7 @@ def find_master(album: str, artist: str = "") -> str:
                 master_id = m_id_regex.search(master_url).group(0)
                 break
     try:
-        marketplace_url = f"{BASE_URL}/sell/list?sort=condition%2Cdesc&limit=250&master_id={master_id}&ev=mb"
+        marketplace_url = f"{BASE_URL}/sell/list?sort=condition%2Cdesc&limit=250&master_id={master_id}&ev=mb&format=Vinyl"
         return marketplace_url
     except UnboundLocalError:
         # UnboundLocalError thrown, if master_id was not assigned a value.
