@@ -2,7 +2,7 @@
 import click
 
 from scrape_discogs import find_master, extract
-from analysis import process_raw_csv, get_top_ten_deals
+from analysis import process_raw_csv, get_best_deals
 
 
 @click.command()
@@ -22,12 +22,15 @@ def scrape(album: str, artist: str = "") -> None:
     click.secho("Connecting to Discogs...", fg="green")
     master = find_master(album, artist)
     click.secho("Scraping information from Discogs...", fg="green")
-    extract(master)
-    click.secho("Filtering deals.", fg="green")
+    extraction = extract(master)
+    if extraction == "No items for sale.":
+        click.secho("No Deals available.", fg="yellow")    
+        return
+    click.secho("Filtering deals...", fg="green")
     process_raw_csv()
-    click.secho("\t\tTop Ten Deals", fg="green")
-    get_top_ten_deals()
-
+    click.secho("Opening top three deals...", fg="green")
+    get_best_deals()
+    
 
 if __name__ == "__main__":
     scrape()

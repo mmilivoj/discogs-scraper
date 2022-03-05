@@ -4,6 +4,7 @@ import requests
 import time
 import random 
 import re
+import click
 
 import pandas as pd
 from bs4 import BeautifulSoup
@@ -35,7 +36,6 @@ def read_url_with_headers(url: str):
 
 
 def find_master(album: str, artist: str = "") -> str:
-    print(type(artist), artist)
     """Find master release for specified album and artist [optionally]."""
     album = "-".join(album.split())
     album_master_releases_url = f"{BASE_URL}/search/?q={album}&type=master"
@@ -54,8 +54,6 @@ def find_master(album: str, artist: str = "") -> str:
         # Artist specified
         for master_release in master_releases:
             master_url = master_release.find("a")["href"]
-            print(master_url.lower())
-            print(album.lower())
             if (album.lower() in master_url.lower()) and (
                 "-".join(artist.split()).lower() in master_url.lower()
             ):
@@ -68,8 +66,8 @@ def find_master(album: str, artist: str = "") -> str:
         # UnboundLocalError thrown, if master_id was not assigned a value.
             # Happens when a combination of artist and album is specified, that is not available on Discogs.com
         album = album.replace("-", " ")
-        return f"{album} by {artist} could not be identified."
-
+        print(f"{album} by {artist} could not be identified.")
+        return None
 
 def extract(marketplace_url: str) -> None:
     """Extract all releases from marketplace."""
@@ -81,7 +79,8 @@ def extract(marketplace_url: str) -> None:
         html_doc = read_url_with_headers(url).text
         marketplace = BeautifulSoup(html_doc, "lxml")
         releases = marketplace.find_all("tr", attrs={"class": "shortcut_navigable"})
-
+        if not releases:
+            return "No items for sale."
         for release in releases:
             media_condition = release.find(
                 "p", attrs={"class": "item_condition"}
@@ -178,10 +177,14 @@ def extract(marketplace_url: str) -> None:
             next_page = False
 
     releases_df = pd.DataFrame(data_set)
-    album_cover_src = releases[0].find("td").a.img["data-src"]
     releases_df.to_csv("raw.csv", index=False)
-    with open("album.jpeg", "wb") as f:
-        f.write(read_url_with_headers(album_cover_src).content)
+    # try:
+    #     album_cover_src = releases[0].find("td").a.img["data-src"]
+    #     with open("album.jpeg", "wb") as f:
+    #         f.write(read_url_with_headers(album_cover_src).content)
+    # except IndexError:
+    #     # list is empty
+    #     pass
 
 
 

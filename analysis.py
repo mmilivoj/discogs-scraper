@@ -1,6 +1,9 @@
 """Analyzing the scraped information to find the best deals."""
 
 import csv
+import webbrowser
+import time
+import os
 
 import pandas as pd
 import warnings
@@ -57,12 +60,17 @@ def process_raw_csv() -> None:
     df.to_csv("processed.csv", index=False)
 
 
-def get_top_ten_deals() -> None:
+def get_best_deals() -> None:
+    """Get top three deals."""
     with open("processed.csv") as f:
         topTen = csv.reader(f, delimiter=",")
         for index, row in enumerate(topTen):
             if index == 0:
                 continue
-            if index == 11:
+            if index == 4:
                 break
-            print(f"Top {index}: https://www.discogs.com{row[-5]}")
+            webbrowser.open(f"https://www.discogs.com{row[-5]}")
+            time.sleep(1.5)
+    os.remove("raw.csv")
+    os.remove("processed.csv")
+    #os.remove("album.jpeg")
