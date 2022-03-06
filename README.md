@@ -23,9 +23,11 @@ The **MediaCondition** is a converted value:
 0.4 = Very Good
 ```
 The higher the MediaCondition value, the higher the quotient.
-## Installation
+
+## :warning: Follow-up sections are going to be updated in the near future.
+### Installation
 - 
-## Example
+### Example
 * Searching with album title only
   * ...
 * Searching with a specified artist or band 
