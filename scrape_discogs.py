@@ -104,21 +104,7 @@ def extract(marketplace_url: str) -> None:
                 ).find_next_sibling("a")
             except:
                 number_of_ratings = ""
-            price = release.find("span", attrs={"class": "price"})
-            shipping_costs = release.find("span", class_="hide_mobile item_shipping")
             total_price_in_euro = release.find("span", class_="converted_price")
-            ships_from = release.find_all("td", attrs={"class": "seller_info"})[
-                0
-            ].find_all("li")[2]
-            sleeve_condition = release.find("p", class_="item_condition").find(
-                "span", class_="item_sleeve_condition"
-            )
-            try:
-                individual_text = release.find_all("p", attrs={"class": "hide_mobile"})[
-                    1
-                ]
-            except:
-                individual_text = ""
             release_page = (
                 BASE_URL
                 + release.find("a", attrs={"class": "item_release_link"})["href"]
@@ -130,13 +116,8 @@ def extract(marketplace_url: str) -> None:
                 want,
                 star_rating,
                 number_of_ratings,
-                price,
-                shipping_costs,
                 total_price_in_euro,
-                ships_from,
                 media_condition,
-                sleeve_condition,
-                individual_text,
                 release_page,
                 selling_page
             ]
@@ -147,13 +128,8 @@ def extract(marketplace_url: str) -> None:
                 "want",
                 "star_rating",
                 "number_of_ratings",
-                "price",
-                "shipping_costs",
                 "total_price_in_euro",
-                "ships_from",
                 "media_condition",
-                "sleeve_condition",
-                "individual_text",
                 "release_page",
                 "selling_page"
             ]
@@ -178,14 +154,6 @@ def extract(marketplace_url: str) -> None:
 
     releases_df = pd.DataFrame(data_set)
     releases_df.to_csv("raw.csv", index=False)
-    # try:
-    #     album_cover_src = releases[0].find("td").a.img["data-src"]
-    #     with open("album.jpeg", "wb") as f:
-    #         f.write(read_url_with_headers(album_cover_src).content)
-    # except IndexError:
-    #     # list is empty
-    #     pass
-
 
 
 if __name__ == "__main__":

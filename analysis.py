@@ -14,7 +14,6 @@ warnings.filterwarnings("ignore")
 def process_raw_csv() -> None:
     df = pd.read_csv("raw.csv")
     df["star_rating"] = df["star_rating"].str.replace("%", "").astype("float")
-    df["ships_from"] = df["ships_from"].str.replace("Versand aus:", "").str.strip()
     df = df[df["number_of_ratings"].notna()]
     df["number_of_ratings"] = (
         df["number_of_ratings"]
@@ -32,11 +31,10 @@ def process_raw_csv() -> None:
     df = df[
         ~df["title"].str.lower().str.contains(r"unofficial")
     ]  # Drop unofficial releases.
-    df["wanted_ratio"] = df["want"] / df["have"]
 
     df["media_condition"] = df["media_condition"].str.extract(r"(\(.*\))")
-    df["sleeve_condition"] = df["sleeve_condition"].str.extract(r"(\(.*\))")
     df["deal_quotient"] = df["media_condition"] == "(M)"
+    # Assign value based on condition
     df.loc[df["media_condition"] == "(M)", "media_wert"] = 1
     df.loc[df["media_condition"] == "(NM or M-)", "media_wert"] = 0.8
     df.loc[df["media_condition"] == "(VG+)", "media_wert"] = 0.6
@@ -48,6 +46,7 @@ def process_raw_csv() -> None:
         .str.replace("insgesamt", "")
         .str.replace("etwa", "")
     )
+    # Delete first dot for prices over 1k => e.g. 1.300.50 
     df.loc[df["total_price_in_euro"].str.count(r"\.") == 2, "total_price_in_euro"] = df[
         "total_price_in_euro"
     ].str.replace(".", "", 1)
@@ -73,4 +72,3 @@ def get_best_deals() -> None:
             time.sleep(1.5)
     os.remove("raw.csv")
     os.remove("processed.csv")
-    #os.remove("album.jpeg")
