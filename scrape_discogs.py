@@ -25,8 +25,8 @@ BASE_URL = "https://www.discogs.com"
 
 
 def wait() -> time:
-    """Wait 3-5 seconds to slow scraping down."""
-    return time.sleep(random.randrange(3, 5))
+    """Wait 2-4 seconds to slow scraping down."""
+    return time.sleep(random.randrange(2, 4))
 
 
 def read_url_with_headers(url: str):

@@ -2,11 +2,12 @@
 
 import csv
 import webbrowser
-import time
 import os
 
 import pandas as pd
 import warnings
+
+from scrape_discogs import wait
 
 warnings.filterwarnings("ignore")
 
@@ -69,6 +70,6 @@ def get_best_deals() -> None:
             if index == 4:
                 break
             webbrowser.open(f"https://www.discogs.com{row[-5]}")
-            time.sleep(1.5)
+            wait()
     os.remove("raw.csv")
     os.remove("processed.csv")
