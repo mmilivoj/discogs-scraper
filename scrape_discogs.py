@@ -1,17 +1,18 @@
 #! /Users/marko/Desktop/DiScraper/venv/bin/python3
 
+"""Scraping function for Discogs marketplace."""
+
 import requests
 import time
-import random 
+import random
 import re
-import click
 
 import pandas as pd
 from bs4 import BeautifulSoup
 
 
 # Specify real-world headers, as otherwise the "requests"-library uses headers that indicate a scraping machine.
-HEADERS = { 
+HEADERS = {
     "accept": "*/*",
     "accept-encoding": "gzip, deflate, br",
     "accept-language": "de-de",
@@ -64,10 +65,11 @@ def find_master(album: str, artist: str = "") -> str:
         return marketplace_url
     except UnboundLocalError:
         # UnboundLocalError thrown, if master_id was not assigned a value.
-            # Happens when a combination of artist and album is specified, that is not available on Discogs.com
+        # Happens when a combination of artist and album is specified, that is not available on Discogs.com
         album = album.replace("-", " ")
         print(f"{album} by {artist} could not be identified.")
         return None
+
 
 def extract(marketplace_url: str) -> None:
     """Extract all releases from marketplace."""
@@ -119,7 +121,7 @@ def extract(marketplace_url: str) -> None:
                 total_price_in_euro,
                 media_condition,
                 release_page,
-                selling_page
+                selling_page,
             ]
 
             keys = [
@@ -131,11 +133,11 @@ def extract(marketplace_url: str) -> None:
                 "total_price_in_euro",
                 "media_condition",
                 "release_page",
-                "selling_page"
+                "selling_page",
             ]
 
             values = []
-            
+
             for item in raw_data:
                 if item is not None:
                     try:
