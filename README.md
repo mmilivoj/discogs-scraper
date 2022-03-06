@@ -1,5 +1,5 @@
 # Discogs Scraper
-Find best deal for a specific vinyl (long-playing record) on Discogs.
+Finds best deal for a specific vinyl (long-playing record) on Discogs.
 
 ### What does <ins>best</ins> mean?
 
