@@ -156,7 +156,3 @@ def extract(marketplace_url: str) -> None:
 
     releases_df = pd.DataFrame(data_set)
     releases_df.to_csv("raw.csv", index=False)
-
-
-if __name__ == "__main__":
-    extract(find_master("kill em all"))

@@ -7,7 +7,7 @@ import os
 import pandas as pd
 import warnings
 
-from scrape_discogs import wait
+from discogs_scraper.extract import wait
 
 warnings.filterwarnings("ignore")
 

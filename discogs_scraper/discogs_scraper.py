@@ -1,8 +1,8 @@
 """CLI-App."""
 import click
 
-from scrape_discogs import find_master, extract
-from analysis import process_raw_csv, get_best_deals
+from discogs_scraper.extract import find_master, extract
+from discogs_scraper.analysis import process_raw_csv, get_best_deals
 
 
 @click.command()
