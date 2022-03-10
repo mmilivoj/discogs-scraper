@@ -10,7 +10,9 @@ import webbrowser
 
 import pandas as pd
 from bs4 import BeautifulSoup
+import warnings
 
+warnings.filterwarnings('ignore')
 
 # Specify real-world headers, as otherwise the "requests"-library uses headers that indicate a scraping machine.
 HEADERS = {
