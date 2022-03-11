@@ -25,7 +25,9 @@ HEADERS = {
     "sec-fetch-dest": "empty",
     "sec-fetch-mode": "cors",
     "sec-fetch-site": "cross-site",
-    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.80 Safari/537.36",
+    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) \
+        AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.80 \
+                Safari/537.36",
 }
 
 BASE_URL = "https://www.discogs.com"
@@ -71,7 +73,8 @@ def find_master(album: str, artist: str = "") -> str:
                 master_id = m_id_regex.search(master_url).group(0)
                 break
     try:
-        marketplace_url = f"{BASE_URL}/sell/list?sort=condition%2Cdesc&limit=250&master_id={master_id}&ev=mb&format=Vinyl"
+        marketplace_url = f"{BASE_URL}\
+            /sell/list?sort=condition%2Cdesc&limit=250&master_id={master_id}&ev=mb&format=Vinyl"
         return marketplace_url
     except UnboundLocalError:
         # UnboundLocalError thrown, if master_id was not assigned a value.
@@ -109,7 +112,7 @@ def extract(marketplace_url: str) -> None:
                     "strong"
                 )
             except AttributeError:
-                # no parent 
+                # no parent
                 star_rating = ""
             try:
                 number_of_ratings = release.find(
@@ -204,7 +207,7 @@ def process_raw_csv() -> None:
         .str.replace("insgesamt", "")
         .str.replace("etwa", "")
     )
-    # Delete first dot for prices over 1k => e.g. 1.300.50 
+    # Delete first dot for prices over 1k => e.g. 1.300.50
     df.loc[df["total_price_in_euro"].str.count(r"\.") == 2, "total_price_in_euro"] = df[
         "total_price_in_euro"
     ].str.replace(".", "", 1)

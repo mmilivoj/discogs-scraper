@@ -1,4 +1,4 @@
 """Discogs Scraper Package."""
 
-#from .core import scrape
-#from .helpers import find_master, extract, process_raw_csv, get_best_deals
+from .core import scrape  # noqa: F401
+from .helpers import find_master, extract, process_raw_csv, get_best_deals  # noqa: F401

@@ -1,7 +1,7 @@
 """CLI-App."""
 
 import click
-from helpers import find_master, extract, process_raw_csv, get_best_deals
+from .helpers import find_master, extract, process_raw_csv, get_best_deals
 
 
 @click.command()
@@ -23,13 +23,13 @@ def scrape(album: str, artist: str = "") -> None:
     click.secho("Scraping information from Discogs...", fg="green")
     extraction = extract(master)
     if extraction == "No items for sale.":
-        click.secho("No Deals available.", fg="yellow")    
+        click.secho("No Deals available.", fg="yellow")
         return
     click.secho("Filtering deals...", fg="green")
     process_raw_csv()
     click.secho("Opening top three deals...", fg="green")
     get_best_deals()
-    
+
 
 if __name__ == "__main__":
     scrape()
