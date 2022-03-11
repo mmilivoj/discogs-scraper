@@ -1,8 +1,7 @@
 """CLI-App."""
 
 import click
-
-from .helpers import find_master, extract, process_raw_csv, get_best_deals
+from helpers import find_master, extract, process_raw_csv, get_best_deals
 
 
 @click.command()

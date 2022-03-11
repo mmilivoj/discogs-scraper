@@ -2,12 +2,15 @@
 
 import requests
 import time
+import sys
 import random
 import re
 import csv
 import os
 import webbrowser
+import click
 
+from requests.exceptions import ConnectionError
 import pandas as pd
 from bs4 import BeautifulSoup
 import warnings
@@ -43,9 +46,13 @@ def find_master(album: str, artist: str = "") -> str:
     """Find master release for specified album and artist [optionally]."""
     album = "-".join(album.split())
     album_master_releases_url = f"{BASE_URL}/search/?q={album}&type=master"
-    master_releases_tree = BeautifulSoup(
-        read_url_with_headers(album_master_releases_url).text, "lxml"
-    )
+    try:
+        master_releases_tree = BeautifulSoup(
+            read_url_with_headers(album_master_releases_url).text, "lxml"
+        )
+    except ConnectionError:
+        click.secho("Please check your internet connection.", fg="yellow")
+        sys.exit()
     master_releases = master_releases_tree.find_all(
         "div", attrs={"data-object-type": "master release"}
     )
@@ -101,13 +108,14 @@ def extract(marketplace_url: str) -> None:
                 star_rating = release.find("span", class_="star_rating").parent.find(
                     "strong"
                 )
-            except:
+            except AttributeError:
+                # no parent 
                 star_rating = ""
             try:
                 number_of_ratings = release.find(
                     "span", attrs={"class": "star_rating"}
                 ).find_next_sibling("a")
-            except:
+            except AttributeError:
                 number_of_ratings = ""
             total_price_in_euro = release.find("span", class_="converted_price")
             release_page = (
@@ -145,7 +153,7 @@ def extract(marketplace_url: str) -> None:
                 if item is not None:
                     try:
                         values.append(item.text.strip().replace(",", "."))
-                    except:
+                    except AttributeError:
                         values.append(item)
                 else:
                     values.append("")
@@ -218,7 +226,7 @@ def get_best_deals() -> None:
                 continue
             if index == 4:
                 break
-            webbrowser.open(f"https://www.discogs.com{row[-5]}")
+            webbrowser.open(BASE_URL + row[-4])
             wait()
     os.remove("raw.csv")
     os.remove("processed.csv")
