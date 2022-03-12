@@ -1,4 +1,4 @@
 """Discogs Scraper Package."""
 
-from .core import scrape  # noqa: F401
-from .helpers import find_master, extract, process_raw_csv, get_best_deals  # noqa: F401
+from .core import DiscogsScraper  # noqa: F401
+from .exceptions import NetworkCallFailed, EmptyTitle, NoArtistForAlbum  # noqa: F401

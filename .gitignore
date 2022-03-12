@@ -6,3 +6,5 @@
 *.csv
 *.jpeg
 *.ipynb
+
+Makefile
