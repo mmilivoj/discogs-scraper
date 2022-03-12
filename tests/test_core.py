@@ -11,7 +11,7 @@ def test_album_title_is_empty_string():
     with pytest.raises(discogs_scraper.exceptions.EmptyTitle):
         release = discogs_scraper.core.DiscogsScraper("")
 
-
+@pytest.mark.skip(reason="Not applicable to GitHub's Actions. (ubuntu)")
 def test_searching_without_internet():
     """Test if exception is raised when no internet connection."""
     # os commands are only applied to MacOS.
