@@ -2,7 +2,6 @@
 
 import requests
 import time
-import sys
 import random
 import re
 import csv
@@ -25,9 +24,7 @@ HEADERS = {
     "sec-fetch-dest": "empty",
     "sec-fetch-mode": "cors",
     "sec-fetch-site": "cross-site",
-    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) \
-        AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.80 \
-                Safari/537.36",
+    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.80 Safari/537.36",  # noqa: E501
 }
 
 BASE_URL = "https://www.discogs.com"
@@ -46,6 +43,9 @@ def read_url_with_headers(url: str):
 
 def find_master(album: str, artist: str = "") -> str:
     """Find master release for specified album and artist [optionally]."""
+    if not album:
+        click.secho("Please specify an album title.", fg="yellow")
+
     album = "-".join(album.split())
     album_master_releases_url = f"{BASE_URL}/search/?q={album}&type=master"
     try:
@@ -53,8 +53,7 @@ def find_master(album: str, artist: str = "") -> str:
             read_url_with_headers(album_master_releases_url).text, "lxml"
         )
     except ConnectionError:
-        click.secho("Please check your internet connection.", fg="yellow")
-        sys.exit()
+        raise SystemExit
     master_releases = master_releases_tree.find_all(
         "div", attrs={"data-object-type": "master release"}
     )
@@ -73,15 +72,14 @@ def find_master(album: str, artist: str = "") -> str:
                 master_id = m_id_regex.search(master_url).group(0)
                 break
     try:
-        marketplace_url = f"{BASE_URL}\
-            /sell/list?sort=condition%2Cdesc&limit=250&master_id={master_id}&ev=mb&format=Vinyl"
+        marketplace_url = f"{BASE_URL}/sell/list?sort=condition%2Cdesc&limit=250&master_id={master_id}&ev=mb&format=Vinyl"
         return marketplace_url
     except UnboundLocalError:
         # UnboundLocalError thrown, if master_id was not assigned a value.
         # Happens when a combination of artist and album is specified, that is not available on Discogs.com
         album = album.replace("-", " ")
         print(f"{album} by {artist} could not be identified.")
-        return None
+        raise SystemExit
 
 
 def extract(marketplace_url: str) -> None:
@@ -173,6 +171,7 @@ def extract(marketplace_url: str) -> None:
 
 
 def process_raw_csv() -> None:
+    """Process necessary fields."""
     df = pd.read_csv("raw.csv")
     df["star_rating"] = df["star_rating"].str.replace("%", "").astype("float")
     df = df[df["number_of_ratings"].notna()]
