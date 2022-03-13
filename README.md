@@ -24,12 +24,19 @@ The **MediaCondition** is a converted value:
 ```
 The higher the MediaCondition value, the higher the quotient.
 
-## :warning: Follow-up sections are going to be updated in the near future.
-### Installation
-- 
-### Example
+### Installation and Usage
+1. Clone the project into your desired directory.
+    * ```git clone https://github.com/mmilivoj/discogs-scraper.git```
+2. Navigate to the above mentioned directory.
+3. Install [pipenv](https://pypi.org/project/pipenv/) if you have not already got it:
+    * python3 -m pip install pipenv
+3. Create pipenv: ```pipenv install```
+4. Activate pipenv: ```pipenv shell```
+    * Activated pipenv: ```(discogs-scarper) [...]$```
+    * Exit pipenv environment by typing: ```exit```
+5. Run script in pipenv: ```python3 scrape.py --album="[...]" --artist="[[...] Optional]"```
+#### Example (within pipenv shell)
 * Searching with album title only
-  * ...
+  * ```python3 scrape.py --album="the dark side of the moon"```
 * Searching with a specified artist or band 
-  * ...
-* 
+  * ```python3 scrape.py --album="love" --artist="the cult"```
