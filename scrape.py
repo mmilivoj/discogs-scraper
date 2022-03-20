@@ -11,11 +11,11 @@ from discogs_scraper.core import DiscogsScraper
     help='Provide the title of the LP to be searched on "https://www.discogs.com".',
 )
 @click.option(
-    "--artist", default="", help="Specify the artist or band of your desired LP."
+    "--by", default="", help="Specify the artist or band of your desired LP."
 )
-def scrape(album: str, artist: str = "") -> None:
+def scrape(album: str, by: str = "") -> None:
     """Scrape the top ten deals for a given album (and artist/band optionally)."""
-    release = DiscogsScraper(album, artist)
+    release = DiscogsScraper(album, by)
 
     click.secho("Connecting to Discogs...", fg="green")
     release.find_master()

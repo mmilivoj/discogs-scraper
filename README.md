@@ -34,9 +34,9 @@ The higher the MediaCondition value, the higher the quotient.
 4. Activate pipenv: ```pipenv shell```
     * Activated pipenv: ```(discogs-scarper) [...]$```
     * Exit pipenv environment by typing: ```exit```
-5. Run script in pipenv: ```python3 scrape.py --album="[...]" --artist="[[...] Optional]"```
+5. Run script in pipenv: ```python3 scrape.py --album="[...]" --by="[[...] Optional]"```
 #### Example (within pipenv shell)
 * Searching with album title only
   * ```python3 scrape.py --album="the dark side of the moon"```
-* Searching with a specified artist or band 
-  * ```python3 scrape.py --album="love" --artist="the cult"```
+* Searching with a specified artist or band
+  * ```python3 scrape.py --album="love" --by="the cult"```
